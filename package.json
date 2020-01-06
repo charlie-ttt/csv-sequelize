@@ -1,0 +1,16 @@
+{
+  "name": "csv-to-postgresql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/charlie-ttt/csv-to-postgresql.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/charlie-ttt/csv-to-postgresql/issues"
+  },
+  "homepage": "https://github.com/charlie-ttt/csv-to-postgresql#readme"
+}
