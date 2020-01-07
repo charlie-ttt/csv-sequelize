@@ -5,7 +5,7 @@ const testObj = {
   csvFilePath: './testproducts.csv',
   databaseName: 'testcsv',
   tableName: 'testTable',
-  columnsInfo: [
+  columnTypes: [
     'TEXT',
     'TEXT',
     'TEXT',
@@ -24,7 +24,7 @@ const seed = async obj => {
   try {
     // console.log('here is test data obj: ', obj);
     const jsonObjArray = await csv().fromFile(obj.csvFilePath);
-    console.log('TCL: jsonObjArray', jsonObjArray);
+    // console.log('TCL: jsonObjArray', jsonObjArray);
 
     const db = new Sequelize(
       process.env.DATABASE_URL ||
@@ -40,12 +40,28 @@ const seed = async obj => {
     //initialize table by looping through CSV's json object
     const columnNames = Object.keys(jsonObjArray[0]);
     console.log('TCL: columnNames', columnNames);
+    console.log('TCL: columnNames.length', columnNames.length);
+
+    //check to see if number of column matches
+    if (obj.columnTypes.length !== columnNames.length) {
+      console.log(`Number of columns doesn't match`);
+      console.log('columnTypes input length: ', obj.columnTypes.length);
+      console.log('CSV column length: ', columnNames.length);
+      return;
+    }
+
+    const columnInfo = [];
+    for (let i = 0; i < columnNames.length; i++) {
+      columnInfo.push({ name: columnNames[i], type: obj.columnTypes[i] });
+    }
+    console.log('TCL: columnInfo', columnInfo);
+
     const initializeObj = {};
 
     // console.log('TCL: Sequelize.INTEGER', Sequelize.INTEGER);
-    columnNames.forEach(name => {
-      initializeObj[name] = {
-        type: Sequelize.STRING
+    columnInfo.forEach(col => {
+      initializeObj[col.name] = {
+        type: Sequelize[col.type]
       };
     });
     //if id column exists -> make it the primary key
@@ -60,16 +76,11 @@ const seed = async obj => {
     await DBseed.sync({ force: true });
 
     await DBseed.bulkCreate(jsonObjArray);
-    // await jsonObjArray.map(async row => {
-    //   await DBseed.create(row);
-    // });
 
     //closing connection
-    setTimeout(() => {
-      db.close();
-      console.log('db connection closed');
-      return db;
-    }, 2000);
+    db.close();
+    console.log('db connection closed');
+    return DBseed;
   } catch (error) {
     console.log(error);
   }
