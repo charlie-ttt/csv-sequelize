@@ -1,15 +1,15 @@
-# NPM csv-to-postgresql
+# NPM csv-sequelize
 
 To install
 
 ```bash
-npm install csv-to-postgresql
+npm install csv-sequelize
 ```
 
 To use
 
 ```bash
-const transfer = require('csv-to-postgresql');
+const transfer = require('csv-sequelize');
 transfer.runSeed(obj)
 ```
 

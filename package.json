@@ -1,13 +1,22 @@
 {
-  "name": "csv-to-postgresql",
+  "name": "csv-sequelize",
   "version": "1.0.0",
-  "description": "",
+  "description": "This module creates a postgresql table from a csv file using Sequelize. It returns the sequelize table which allows the use of Sequelize instance.",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/charlie-ttt/csv-to-postgresql.git"
   },
-  "author": "",
+  "author": {
+    "name": "charlie t",
+    "email": "achanont@gmail.com"
+  },
+  "keywords": [
+    "csv sequelize",
+    "csv postgresql",
+    "csv sequelize postgresql",
+    "postgresql"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/charlie-ttt/csv-to-postgresql/issues"

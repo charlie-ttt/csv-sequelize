@@ -1,26 +1,7 @@
 const csv = require('csvtojson');
 const Sequelize = require('sequelize');
 
-const testObj = {
-  csvFilePath: './testproducts.csv',
-  databaseName: 'testcsv',
-  tableName: 'testTable',
-  columnTypes: [
-    'TEXT',
-    'INTEGER',
-    'TEXT',
-    'TEXT',
-    'TEXT',
-    'TEXT',
-    'TEXT',
-    'TEXT',
-    'TEXT',
-    'TEXT',
-    'TEXT'
-  ]
-};
-
-const seed = async obj => {
+module.exports.runSeed = async obj => {
   try {
     const jsonObjArray = await csv().fromFile(obj.csvFilePath);
 
@@ -80,8 +61,6 @@ const seed = async obj => {
     console.log(error);
   }
 };
-
-seed(testObj);
 
 // const execSync = require('child_process').execSync;
 // const output = execSync('ls', { encoding: 'utf-8' }); // the default is 'buffer'
