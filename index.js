@@ -7,7 +7,7 @@ const testObj = {
   tableName: 'testTable',
   columnTypes: [
     'TEXT',
-    'TEXT',
+    'INTEGER',
     'TEXT',
     'TEXT',
     'TEXT',
@@ -22,9 +22,7 @@ const testObj = {
 
 const seed = async obj => {
   try {
-    // console.log('here is test data obj: ', obj);
     const jsonObjArray = await csv().fromFile(obj.csvFilePath);
-    // console.log('TCL: jsonObjArray', jsonObjArray);
 
     const db = new Sequelize(
       process.env.DATABASE_URL ||
@@ -39,8 +37,6 @@ const seed = async obj => {
 
     //initialize table by looping through CSV's json object
     const columnNames = Object.keys(jsonObjArray[0]);
-    console.log('TCL: columnNames', columnNames);
-    console.log('TCL: columnNames.length', columnNames.length);
 
     //check to see if number of column matches
     if (obj.columnTypes.length !== columnNames.length) {
@@ -54,16 +50,15 @@ const seed = async obj => {
     for (let i = 0; i < columnNames.length; i++) {
       columnInfo.push({ name: columnNames[i], type: obj.columnTypes[i] });
     }
-    console.log('TCL: columnInfo', columnInfo);
 
     const initializeObj = {};
 
-    // console.log('TCL: Sequelize.INTEGER', Sequelize.INTEGER);
     columnInfo.forEach(col => {
       initializeObj[col.name] = {
         type: Sequelize[col.type]
       };
     });
+
     //if id column exists -> make it the primary key
     if (initializeObj.id) {
       initializeObj.id.primaryKey = true;
