@@ -1,7 +1,7 @@
 const csv = require('csvtojson');
 const Sequelize = require('sequelize');
 
-module.exports.runSeed = async obj => {
+module.exports = async function(obj) {
   try {
     const jsonObjArray = await csv().fromFile(obj.csvFilePath);
 
@@ -12,6 +12,7 @@ module.exports.runSeed = async obj => {
         // logging: false
       }
     );
+
     //forcefully drop existing tables(if any) and creates new ones. creates if they don't exist at all.
     await db.sync({ force: true });
     console.log('db synced!');
@@ -27,6 +28,9 @@ module.exports.runSeed = async obj => {
       return;
     }
 
+    /*
+     * create an obj of data to initializ the database table
+     */
     const columnInfo = [];
     for (let i = 0; i < columnNames.length; i++) {
       columnInfo.push({ name: columnNames[i], type: obj.columnTypes[i] });
@@ -44,24 +48,19 @@ module.exports.runSeed = async obj => {
     if (initializeObj.id) {
       initializeObj.id.primaryKey = true;
     }
-    console.log('TCL: initializeObj', initializeObj);
+    // console.log('TCL: initializeObj', initializeObj);
 
-    const DBseed = db.define(obj.tableName, initializeObj);
+    const dbTable = db.define(obj.tableName, initializeObj);
 
     // force: true will drop the table if it already exists
-    await DBseed.sync({ force: true });
+    await dbTable.sync({ force: true });
 
-    await DBseed.bulkCreate(jsonObjArray);
+    //create data on the database here!
+    await dbTable.bulkCreate(jsonObjArray);
 
-    //closing connection
-    db.close();
-    console.log('db connection closed');
-    return DBseed;
+    //returning db and the created table
+    return { dbTable: dbTable, db: db };
   } catch (error) {
     console.log(error);
   }
 };
-
-// const execSync = require('child_process').execSync;
-// const output = execSync('ls', { encoding: 'utf-8' }); // the default is 'buffer'
-// console.log('Output was:\n', output);
