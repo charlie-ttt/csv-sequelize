@@ -1,6 +1,6 @@
 {
   "name": "csv-sequelize",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This module creates a postgresql table from a csv file using Sequelize. It returns the sequelize table which allows the use of Sequelize instance.",
   "main": "index.js",
   "repository": {
