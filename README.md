@@ -18,7 +18,22 @@ transfer.runSeed(obj)
 ##obj
 
 ```bash
-{
-
-}
+const obj = {
+  csvFilePath: './testproducts.csv',
+  databaseName: 'testcsv',    //Name must match with your local database
+  tableName: 'testTable',     //Pick a name for your table
+  columnTypes: [      //The number of column must match your data from csv
+    'TEXT',
+    'INTEGER',
+    'TEXT',
+    'TEXT',
+    'TEXT',
+    'TEXT',
+    'TEXT',
+    'TEXT',
+    'TEXT',
+    'TEXT',
+    'TEXT'
+  ]
+};
 ```
